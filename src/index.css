@@ -1,0 +1,307 @@
+@import "tailwindcss";
+
+@theme {
+  --color-terracotta: #C1440E;
+  --color-terracotta-light: #D4652E;
+  --color-terracotta-dark: #9A360B;
+  --color-deep-indigo: #1B3A4B;
+  --color-deep-indigo-light: #264E66;
+  --color-deep-indigo-dark: #0F2330;
+  --color-sunset-orange: #E8A87C;
+  --color-sunset-orange-light: #F0C4A4;
+  --color-saffron: #D4A03C;
+  --color-saffron-light: #E4BC6A;
+  --color-earth-brown: #5C4033;
+  --color-cream: #FFF5E4;
+  --color-charcoal: #2D2D2D;
+  --color-off-white: #FAF3E0;
+  --color-iitgn-maroon: #8B0000;
+  --color-iitgn-maroon-light: #A52A2A;
+
+  --font-heading: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+/* ─── Base Styles ─── */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-off-white);
+  color: var(--color-charcoal);
+  min-height: 100dvh;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ─── Typography ─── */
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  color: var(--color-deep-indigo);
+  line-height: 1.2;
+}
+
+/* ─── Custom Scrollbar ─── */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-sunset-orange);
+  border-radius: 2px;
+}
+
+/* ─── TipTap Editor Styles ─── */
+.tiptap-editor {
+  outline: none;
+  min-height: 200px;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--color-charcoal);
+}
+
+.tiptap-editor p {
+  margin-bottom: 0.75em;
+}
+
+.tiptap-editor h1 {
+  font-family: var(--font-heading);
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+  color: var(--color-deep-indigo);
+}
+
+.tiptap-editor h2 {
+  font-family: var(--font-heading);
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+  color: var(--color-deep-indigo);
+}
+
+.tiptap-editor h3 {
+  font-family: var(--font-heading);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+  color: var(--color-deep-indigo);
+}
+
+.tiptap-editor ul,
+.tiptap-editor ol {
+  padding-left: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+.tiptap-editor ul {
+  list-style-type: disc;
+}
+
+.tiptap-editor ol {
+  list-style-type: decimal;
+}
+
+.tiptap-editor li {
+  margin-bottom: 0.25em;
+}
+
+.tiptap-editor blockquote {
+  border-left: 3px solid var(--color-terracotta);
+  padding-left: 1em;
+  margin-left: 0;
+  margin-bottom: 0.75em;
+  color: var(--color-earth-brown);
+  font-style: italic;
+}
+
+.tiptap-editor code {
+  background: rgba(27, 58, 75, 0.08);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.tiptap-editor pre {
+  background: var(--color-deep-indigo);
+  color: var(--color-cream);
+  border-radius: 8px;
+  padding: 1em;
+  margin-bottom: 0.75em;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.tiptap-editor a {
+  color: var(--color-terracotta);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.tiptap-editor hr {
+  border: none;
+  border-top: 2px solid var(--color-sunset-orange);
+  margin: 1.5em 0;
+  opacity: 0.5;
+}
+
+.tiptap-editor img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  margin: 0.75em 0;
+}
+
+.tiptap-editor p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: var(--color-earth-brown);
+  opacity: 0.4;
+  pointer-events: none;
+  height: 0;
+}
+
+/* ─── Post Content (rendered in PostView) ─── */
+.post-content {
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.post-content p {
+  margin-bottom: 1em;
+}
+
+.post-content h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin-top: 1.5em;
+  margin-bottom: 0.5em;
+}
+
+.post-content h2 {
+  font-size: 1.375rem;
+  font-weight: 600;
+  margin-top: 1.25em;
+  margin-bottom: 0.5em;
+}
+
+.post-content h3 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1em;
+  margin-bottom: 0.5em;
+}
+
+.post-content ul,
+.post-content ol {
+  padding-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.post-content ul { list-style-type: disc; }
+.post-content ol { list-style-type: decimal; }
+.post-content li { margin-bottom: 0.25em; }
+
+.post-content blockquote {
+  border-left: 3px solid var(--color-terracotta);
+  padding-left: 1em;
+  margin: 1em 0;
+  color: var(--color-earth-brown);
+  font-style: italic;
+}
+
+.post-content a {
+  color: var(--color-terracotta);
+  text-decoration: underline;
+}
+
+.post-content img {
+  max-width: 100%;
+  border-radius: 8px;
+  margin: 1em 0;
+}
+
+.post-content hr {
+  border: none;
+  border-top: 2px solid var(--color-sunset-orange);
+  margin: 2em 0;
+  opacity: 0.4;
+}
+
+.post-content code {
+  background: rgba(27, 58, 75, 0.08);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+.post-content pre {
+  background: var(--color-deep-indigo);
+  color: var(--color-cream);
+  border-radius: 8px;
+  padding: 1em;
+  margin: 1em 0;
+  overflow-x: auto;
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+}
+
+/* ─── Safe Area for Bottom Nav ─── */
+.pb-safe {
+  padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+}
+
+/* ─── Animations ─── */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.4s ease-out forwards;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 2s ease-in-out infinite;
+}
+
+/* ─── Hide Scrollbar for Horizontal Scroll ─── */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -1,0 +1,46 @@
+{
+  "name": "explorer-fellowship",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "homepage": "https://bhavsar-dhruv.github.io/explorer-fellowship",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
+  },
+  "dependencies": {
+    "@tiptap/extension-bubble-menu": "^3.23.1",
+    "@tiptap/extension-image": "^3.23.1",
+    "@tiptap/extension-link": "^3.23.1",
+    "@tiptap/extension-placeholder": "^3.23.1",
+    "@tiptap/pm": "^3.23.1",
+    "@tiptap/react": "^3.23.1",
+    "@tiptap/starter-kit": "^3.23.1",
+    "browser-image-compression": "^2.0.2",
+    "date-fns": "^4.1.0",
+    "firebase": "^12.13.0",
+    "idb": "^8.0.3",
+    "lucide-react": "^1.14.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-router-dom": "^7.15.0"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@tailwindcss/vite": "^4.2.4",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "eslint": "^10.2.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.2",
+    "gh-pages": "^6.3.0",
+    "globals": "^17.5.0",
+    "tailwindcss": "^4.2.4",
+    "vite": "^8.0.10"
+  }
+}
