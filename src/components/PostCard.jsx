@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { MapPin, Youtube } from 'lucide-react';
+import { MapPin, Video } from 'lucide-react';
 import Timestamp from './Timestamp';
 
 export default function PostCard({ post }) {
@@ -55,7 +55,7 @@ export default function PostCard({ post }) {
           )}
           {post.youtube && (
             <span className="text-xs text-red-500">
-              <Youtube size={12} />
+              <Video size={12} />
             </span>
           )}
           {post.tags?.slice(0, 3).map(tag => (

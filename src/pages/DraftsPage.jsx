@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { FileText, Trash2, Youtube, Clock } from 'lucide-react';
+import { FileText, Trash2, Video, Clock } from 'lucide-react';
 import { getDrafts, deleteDraft, getWordCount } from '../utils/storage';
 import { getQueuedPhotos } from '../utils/offlineQueue';
 import { format } from 'date-fns';
@@ -68,7 +68,7 @@ export default function DraftsPage() {
                   </div>
                   <div className="flex items-center gap-2 mt-2">
                     {draft.gps && <span className="text-xs text-green-600">📍 GPS</span>}
-                    {draft.youtube && <span className="text-xs text-red-500"><Youtube size={12} /></span>}
+                    {draft.youtube && <span className="text-xs text-red-500"><Video size={12} /></span>}
                     {(queueCounts[draft.id] || 0) > 0 && (
                       <span className="text-xs text-amber-700 font-mono">
                         {queueCounts[draft.id]} queued

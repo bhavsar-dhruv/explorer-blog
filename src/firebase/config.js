@@ -17,12 +17,13 @@ import { getStorage } from 'firebase/storage';
 
 // ⚠️ REPLACE THIS with your actual Firebase config
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT.firebasestorage.app",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyDh7vcwLvPSHDCO27wlhSG8jNM_2opZhgM",
+  authDomain: "explorer-fellowship-blog.firebaseapp.com",
+  projectId: "explorer-fellowship-blog",
+  storageBucket: "explorer-fellowship-blog.firebasestorage.app",
+  messagingSenderId: "489634978338",
+  appId: "1:489634978338:web:ab1abe36459d0da9aa887b",
+  measurementId: "G-R6Q0TQW2E6"
 };
 
 let app, db, storage;
