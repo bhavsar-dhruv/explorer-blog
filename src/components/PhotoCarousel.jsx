@@ -1,79 +1,87 @@
-import { useState } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import React, { useState } from 'react';
+import imageCompression from 'browser-image-compression';
 
-export default function PhotoCarousel({ photos, initialIndex = 0, forceFullscreen = false, onClose }) {
-  const [current, setCurrent] = useState(initialIndex);
-  const [fullscreen, setFullscreen] = useState(false);
+// ⚠️ Paste your ImgBB API key here
+const IMGBB_API_KEY = "02f0a39680f635b8da152836159dfb52"; 
 
-  if (!photos || !photos.length) return null;
+export default function ImageUploader({ onImageUpload }) {
+  const [isUploading, setIsUploading] = useState(false);
+  const [error, setError] = useState(null);
 
-  const prev = () => setCurrent(i => (i > 0 ? i - 1 : photos.length - 1));
-  const next = () => setCurrent(i => (i < photos.length - 1 ? i + 1 : 0));
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (!file) return;
 
-  const handleSwipe = (() => {
-    let startX = 0;
-    return {
-      onTouchStart: (e) => { startX = e.touches[0].clientX; },
-      onTouchEnd: (e) => {
-        const diff = startX - e.changedTouches[0].clientX;
-        if (Math.abs(diff) > 50) diff > 0 ? next() : prev();
-      },
-    };
-  })();
+    setIsUploading(true);
+    setError(null);
 
-  const Viewer = ({ className }) => (
-    <div className={`relative ${className || ''}`} {...handleSwipe}>
-      <img
-        src={photos[current].url || photos[current].previewUrl}
-        alt={`Photo ${current + 1}`}
-        className="w-full h-full object-contain"
-        onClick={() => setFullscreen(!fullscreen)}
-      />
-      {photos.length > 1 && (
-        <>
-          <button onClick={prev} className="absolute left-2 top-1/2 -translate-y-1/2 p-2 bg-charcoal/50 text-white rounded-full">
-            <ChevronLeft size={20} />
-          </button>
-          <button onClick={next} className="absolute right-2 top-1/2 -translate-y-1/2 p-2 bg-charcoal/50 text-white rounded-full">
-            <ChevronRight size={20} />
-          </button>
-        </>
-      )}
-      {/* Dots */}
-      {photos.length > 1 && (
-        <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5">
-          {photos.map((_, i) => (
-            <button
-              key={i}
-              onClick={() => setCurrent(i)}
-              className={`w-2 h-2 rounded-full transition-all ${i === current ? 'bg-white w-4' : 'bg-white/50'}`}
-            />
-          ))}
-        </div>
-      )}
-    </div>
-  );
+    try {
+      // 1. Compress the image before uploading (Saves massive mobile data)
+      const options = {
+        maxSizeMB: 0.5,
+        maxWidthOrHeight: 1920,
+        useWebWorker: true,
+      };
+      
+      const compressedFile = await imageCompression(file, options);
 
-  if (fullscreen || forceFullscreen) {
-    return (
-      <div className="fixed inset-0 z-50 bg-black flex items-center justify-center">
-        <button
-          onClick={() => {
-            if (forceFullscreen && onClose) onClose();
-            else setFullscreen(false);
-          }}
-          className="absolute top-4 right-4 z-10 p-2 bg-white/20 rounded-full text-white"
-        >
-          <X size={24} />
-        </button>
-        <Viewer className="w-full h-full" />
-      </div>
-    );
-  }
+      // 2. Prepare the data for ImgBB
+      const formData = new FormData();
+      formData.append('image', compressedFile);
+
+      // 3. Send it to ImgBB
+      const response = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_API_KEY}`, {
+        method: 'POST',
+        body: formData,
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        // 4. Pass the final image URL back to your main CreatePost form
+        onImageUpload(data.data.display_url);
+      } else {
+        throw new Error("ImgBB refused the upload.");
+      }
+
+    } catch (err) {
+      console.error(err);
+      setError("Failed to upload image. Please check your connection.");
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   return (
-    <div className="rounded-xl overflow-hidden bg-charcoal/5">
-      <Viewer className="aspect-[4/3]" />
+    <div className="my-4">
+      <label className="block text-sm font-medium text-gray-700 mb-2">
+        Attach a Photo
+      </label>
+      
+      <input 
+        type="file" 
+        accept="image/*" 
+        onChange={handleFileChange} 
+        disabled={isUploading}
+        className="block w-full text-sm text-gray-500
+          file:mr-4 file:py-2 file:px-4
+          file:rounded-md file:border-0
+          file:text-sm file:font-semibold
+          file:bg-orange-50 file:text-orange-700
+          hover:file:bg-orange-100"
+      />
+
+      {isUploading && (
+        <p className="mt-2 text-sm text-blue-600 animate-pulse">
+          Compressing & Uploading...
+        </p>
+      )}
+      
+      {error && (
+        <p className="mt-2 text-sm text-red-600">
+          {error}
+        </p>
+      )}
     </div>
   );
 }
