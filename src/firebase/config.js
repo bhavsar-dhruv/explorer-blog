@@ -16,6 +16,7 @@ import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
 
 // ⚠️ REPLACE THIS with your actual Firebase config
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDh7vcwLvPSHDCO27wlhSG8jNM_2opZhgM",
   authDomain: "explorer-fellowship-blog.firebaseapp.com",
