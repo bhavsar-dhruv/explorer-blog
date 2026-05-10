@@ -116,7 +116,7 @@ export default function CreatePost() {
     setUploadItemProgress({ current: 0, total: 0 });
 
     try {
-      // Step 1: Upload photos to Cloud Storage
+      // Step 1: Upload photos to ImgBB
       let uploadedPhotos = [];
       const photoFiles = photos.filter((p) => p.file && !p.queuedOffline);
       const queued = draftId ? await getQueuedPhotos(draftId).catch(() => []) : [];
@@ -193,7 +193,9 @@ export default function CreatePost() {
     publishState === 'compressing'
       ? 'Compressing Images...'
       : publishState === 'uploading'
-      ? `Uploading ${uploadItemProgress.current}/${uploadItemProgress.total} photos...`
+      ? uploadItemProgress.total > 0
+        ? `Uploading ${uploadItemProgress.current}/${uploadItemProgress.total} photos...`
+        : 'Publishing post...'
       : publishState === 'published'
       ? 'Published!'
       : 'Publish';
