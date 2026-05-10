@@ -29,7 +29,9 @@ export default function CreatePost() {
   const [draftId, setDraftId] = useState(id || null);
   const [saveStatus, setSaveStatus] = useState('unsaved');
   const [publishing, setPublishing] = useState(false);
+  const [publishState, setPublishState] = useState('idle');
   const [publishProgress, setPublishProgress] = useState(0);
+  const [uploadItemProgress, setUploadItemProgress] = useState({ current: 0, total: 0 });
   const [queuedPhotoCount, setQueuedPhotoCount] = useState(0);
   const autoSaveTimer = useRef(null);
   const hasLoadedDraft = useRef(false);
@@ -109,7 +111,9 @@ export default function CreatePost() {
     }
 
     setPublishing(true);
+    setPublishState('compressing');
     setPublishProgress(0);
+    setUploadItemProgress({ current: 0, total: 0 });
 
     try {
       // Step 1: Upload photos to Cloud Storage
@@ -129,10 +133,13 @@ export default function CreatePost() {
         uploadedPhotos = await uploadMultiplePhotos(
           allFilesToUpload,
           tempId,
-          (progress) => setPublishProgress(progress * 0.7) // 70% for photo upload
+          (progress) => setPublishProgress(progress * 0.7), // 70% for photo upload
+          (state) => setPublishState(state),
+          (itemProgress) => setUploadItemProgress(itemProgress)
         );
       }
 
+      setPublishState('uploading');
       setPublishProgress(80);
 
       // Step 2: Publish to Firestore
@@ -149,6 +156,7 @@ export default function CreatePost() {
       });
 
       setPublishProgress(100);
+      setPublishState('published');
 
       // Step 3: Clean up
       if (draftId) {
@@ -163,6 +171,7 @@ export default function CreatePost() {
       console.error('Publish failed:', err);
       handleSaveDraft();
       alert('Publish failed: ' + err.message + '\nDraft has been saved.');
+      setPublishState('idle');
     }
     setPublishing(false);
   };
@@ -179,6 +188,15 @@ export default function CreatePost() {
     await removeQueuedPhoto(queueEntryId).catch(() => {});
     setQueuedPhotoCount((count) => Math.max(0, count - 1));
   };
+
+  const publishLabel =
+    publishState === 'compressing'
+      ? 'Compressing Images...'
+      : publishState === 'uploading'
+      ? `Uploading ${uploadItemProgress.current}/${uploadItemProgress.total} photos...`
+      : publishState === 'published'
+      ? 'Published!'
+      : 'Publish';
 
   return (
     <div className="pb-safe">
@@ -200,7 +218,7 @@ export default function CreatePost() {
         <div className="fixed inset-0 z-50 bg-deep-indigo/90 flex items-center justify-center">
           <div className="text-center text-cream space-y-4 px-8">
             <Loader2 size={40} className="animate-spin mx-auto" />
-            <p className="font-heading text-lg">Publishing your story...</p>
+            <p className="font-heading text-lg">{publishLabel}</p>
             <div className="w-64 h-2 bg-cream/10 rounded-full overflow-hidden">
               <div className="h-full bg-saffron rounded-full transition-all duration-300" style={{ width: `${publishProgress}%` }} />
             </div>
@@ -272,8 +290,8 @@ export default function CreatePost() {
             disabled={publishing}
             className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl bg-terracotta text-cream font-semibold hover:bg-terracotta-dark transition-colors disabled:opacity-50 min-h-[48px] shadow-md"
           >
-            <Send size={18} />
-            Publish
+            {publishing ? <Loader2 size={18} className="animate-spin" /> : <Send size={18} />}
+            {publishLabel}
           </button>
         </div>
       </div>
